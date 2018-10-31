@@ -44,7 +44,7 @@
   border: 1px solid var(--malachite);
 }
 
-.type-expense-focus:focus {
+.type_expense_focus:focus {
   border: 1px solid var(--tomato);
 }
 
