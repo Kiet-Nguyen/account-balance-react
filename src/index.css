@@ -52,7 +52,7 @@ input:focus::placeholder {
 .text-green {
   color: var(--malachite);
 }
-
+ 
 .text-red {
   color: var(--tomato);
 }

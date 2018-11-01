@@ -1,0 +1,7 @@
+.balance {
+  display: flex;
+  justify-content: center;
+  color: inherit;
+  text-align: center;
+  font-size: 2rem;
+}
