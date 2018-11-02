@@ -40,6 +40,48 @@ class App extends Component {
     this.setState({ amountValue: event.target.value })
   }
 
+  displayDate = () => {
+    let today = new Date();
+    let datestring = `
+      ${today.toLocaleDateString('en-FI')} 
+      ${today.getHours()}:${today.getMinutes()}
+    `;
+    return datestring;
+  }
+
+  formatNumber = (num, type) => {
+    let numSplit, intPart, decimalPart, sign, result;
+
+    num = Math.abs(num);
+    num = num.toFixed(2);
+
+    numSplit = num.split('.');
+    intPart = numSplit[0];
+    // Add ',' to seperate thousand
+    if (intPart.length > 6) {
+      intPart = `${intPart.substring(
+        0,
+        intPart.length - 6
+      )},${intPart.substring(
+        intPart.length - 6,
+        intPart.length - 3
+      )},${intPart.substring(intPart.length - 3, intPart.length)}`;
+    } else if (intPart.length > 3) {
+      intPart = `${intPart.substring(
+        0,
+        intPart.length - 3
+      )},${intPart.substring(intPart.length - 3, intPart.length)}`;
+    }
+    decimalPart = numSplit[1];
+
+    type === 'income' ? (sign = '+') : (sign = '-');
+
+    num > 0
+      ? (result = `${sign} ${intPart}.${decimalPart}`)
+      : (result = `${intPart}.${decimalPart}`);
+    return result;
+  }
+
   clickAddItemHandler = () => {
     let newItem, itemID;
 
@@ -52,15 +94,24 @@ class App extends Component {
 
     // Add new item into its respective postion
     if (this.state.type === 'income') {
-      newItem = { id: itemID, description: this.state.descriptionValue, amount: this.state.amountValue };
+      newItem = { 
+        id: itemID, 
+        date: this.displayDate(), 
+        description: this.state.descriptionValue, 
+        amount: this.formatNumber(this.state.amountValue, 'income') 
+      };
     } else if (this.state.type === 'expense') {
-      newItem = { id: itemID, description: this.state.descriptionValue, amount: this.state.amountValue };
+      newItem = { 
+        id: itemID, 
+        date: this.displayDate(), 
+        description: this.state.descriptionValue, 
+        amount: this.formatNumber(this.state.amountValue, 'expense')
+      };
     }
     this.state.data.allItems[this.state.type].push(newItem);
 
-    // return newItem;
     this.setState({ descriptionValue: '', amountValue: '' });
-    console.log(this.state.descriptionValue, this.state.data.allItems);
+    console.log(this.state.data);
   }
 
   render() {

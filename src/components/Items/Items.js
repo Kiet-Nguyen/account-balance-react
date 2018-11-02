@@ -13,10 +13,11 @@ const Items = ({ incomeDataApp, expensesDataApp }) => {
             <div className={ classes.income__items }>
               { incomeDataApp.map(income => {
                 return <Item
-                  key={income.id}
-                  idItems={`income-${income.id}`}
-                  descriptionItems={income.description}
-                  amountItems={income.amount} />
+                  key={ income.id }
+                  idItems={ `income-${income.id}` }
+                  dateItems={`Date: ${income.date}`}
+                  descriptionItems={ income.description }
+                  amountItems={ `${income.amount} €` } />
               }) }
             </div>
 
@@ -31,10 +32,11 @@ const Items = ({ incomeDataApp, expensesDataApp }) => {
             <div className={ classes.expense__items }>
               { expensesDataApp.map(expense => {
                 return <Item
-                  key={expense.id}
-                  idItems={`expense-${expense.id}`}
-                  descriptionItems={expense.description}
-                  amountItems={expense.amount} />
+                  key={ expense.id }
+                  idItems={ `expense-${expense.id}` }
+                  dateItems={`Date: ${expense.date}`}
+                  descriptionItems={ expense.description }
+                  amountItems={`${expense.amount} €` } />
               }) }
             </div>
 
