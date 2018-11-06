@@ -22,6 +22,86 @@ class App extends Component {
       balance: 0,
       percentage: -1
     },
+    sum: 0,
+  }
+
+  displayDate = () => {
+    let today = new Date();
+    let datestring = `
+      ${today.toLocaleDateString('en-FI')} 
+      ${today.getHours()}:${today.getMinutes()}
+    `;
+    return datestring;
+  }
+
+  calculateTotal = type => {
+    let sum = 0;
+    let newData = this.state.data;
+
+    sum = this.state.data.allItems[type].reduce((accummulator, currValue) => {
+      accummulator += parseFloat(currValue.amount);
+      return accummulator;
+    }, 0);
+    let totalsType = newData.totals[type] = sum;
+    this.setState({ data: newData });
+  }
+
+  calculateBalance = () => {
+    let total = 0;
+    let newData = this.state.data;
+    total = this.state.data.totals.income - this.state.data.totals.expense;
+    let balance = newData.balance = total;
+    this.setState({ data: newData });
+  }
+
+  addItem = () => {
+    let newItem, itemID;
+    // Create item's ID
+    if (this.state.data.allItems[this.state.type].length > 0) {
+      itemID = this.state.data.allItems[this.state.type][this.state.data.allItems[this.state.type].length - 1].id + 1;
+    } else {
+      itemID = 0;
+    }
+    // Add new item into its respective postion
+    if (this.state.type === 'income') {
+      newItem = {
+        id: itemID,
+        date: this.displayDate(),
+        description: this.state.descriptionValue,
+        amount: this.state.amountValue
+      };
+    } else if (this.state.type === 'expense') {
+      newItem = {
+        id: itemID,
+        date: this.displayDate(),
+        description: this.state.descriptionValue,
+        amount: this.state.amountValue
+      };
+    }
+    this.state.data.allItems[this.state.type].push(newItem);
+
+    // Clear input fields
+    this.setState({ descriptionValue: '', amountValue: '' });
+    console.log(this.state.data);
+    // Calculate totals income and expenses
+    this.calculateTotal('income');
+    this.calculateTotal('expense');
+    // Calculate balance
+    this.calculateBalance();
+  }
+
+  deleteItem = (type, id) => {
+    let itemIDIndex;
+    // Store ids of all remaining items
+    const ids = this.state.data.allItems[type].map(currItem => {
+      return currItem.id;
+    });
+    // Find the index number of current target
+    itemIDIndex = ids.indexOf(id);
+    // Delete the target if it's still inside the array
+    if (itemIDIndex !== -1) {
+      this.state.data.allItems[type].splice(itemIDIndex, 1);
+    }
   }
 
   changedTypeHandler = () => {
@@ -40,78 +120,28 @@ class App extends Component {
     this.setState({ amountValue: event.target.value })
   }
 
-  displayDate = () => {
-    let today = new Date();
-    let datestring = `
-      ${today.toLocaleDateString('en-FI')} 
-      ${today.getHours()}:${today.getMinutes()}
-    `;
-    return datestring;
+  clickedAddItemHandler = () => {
+    if (this.state.descriptionValue === '' && this.state.amountValue === '') {
+      return false;
+    }
+    this.addItem();
   }
 
-  formatNumber = (num, type) => {
-    let numSplit, intPart, decimalPart, sign, result;
+  clickDeleteItem = (event) => {
+    let itemID, type, id;
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-    num = Math.abs(num);
-    num = num.toFixed(2);
-
-    numSplit = num.split('.');
-    intPart = numSplit[0];
-    // Add ',' to seperate thousand
-    if (intPart.length > 6) {
-      intPart = `${intPart.substring(
-        0,
-        intPart.length - 6
-      )},${intPart.substring(
-        intPart.length - 6,
-        intPart.length - 3
-      )},${intPart.substring(intPart.length - 3, intPart.length)}`;
-    } else if (intPart.length > 3) {
-      intPart = `${intPart.substring(
-        0,
-        intPart.length - 3
-      )},${intPart.substring(intPart.length - 3, intPart.length)}`;
+    if (itemID) {
+      const typeIDArr = itemID.split('-');
+      type = typeIDArr[0];
+      id = parseInt(typeIDArr[1]);
+      this.deleteItem(type, id);
     }
-    decimalPart = numSplit[1];
-
-    type === 'income' ? (sign = '+') : (sign = '-');
-
-    num > 0
-      ? (result = `${sign} ${intPart}.${decimalPart}`)
-      : (result = `${intPart}.${decimalPart}`);
-    return result;
-  }
-
-  clickAddItemHandler = () => {
-    let newItem, itemID;
-
-    // Create item's ID
-    if (this.state.data.allItems[this.state.type].length > 0) {
-      itemID = this.state.data.allItems[this.state.type][this.state.data.allItems[this.state.type].length - 1].id + 1;
-    } else {
-      itemID = 0;
-    }
-
-    // Add new item into its respective postion
-    if (this.state.type === 'income') {
-      newItem = { 
-        id: itemID, 
-        date: this.displayDate(), 
-        description: this.state.descriptionValue, 
-        amount: this.formatNumber(this.state.amountValue, 'income') 
-      };
-    } else if (this.state.type === 'expense') {
-      newItem = { 
-        id: itemID, 
-        date: this.displayDate(), 
-        description: this.state.descriptionValue, 
-        amount: this.formatNumber(this.state.amountValue, 'expense')
-      };
-    }
-    this.state.data.allItems[this.state.type].push(newItem);
-
-    this.setState({ descriptionValue: '', amountValue: '' });
-    console.log(this.state.data);
+    // Calculate totals income and expenses
+    this.calculateTotal('income');
+    this.calculateTotal('expense');
+    // Calculate balance
+    this.calculateBalance();
   }
 
   render() {
@@ -126,11 +156,15 @@ class App extends Component {
             amountValueApp={ this.state.amountValue }
             changedDescriptionValueApp={ this.changedDescriptionValueHandler }
             changedAmountValueApp={ this.changedAmountValueHandler }
-            clickedAddItemApp={ this.clickAddItemHandler } />
-          <TotalBalance />
+            clickedAddItemApp={ this.clickedAddItemHandler }
+            keyPressAddItemApp={ this.keyPressAddItemHandler } />
+          <TotalBalance balanceApp={ this.state.data.balance } />
           <Items
             incomeDataApp={ this.state.data.allItems.income }
-            expensesDataApp={ this.state.data.allItems.expense } />
+            expensesDataApp={ this.state.data.allItems.expense }
+            totalIncomeApp={ this.state.data.totals.income }
+            totalExpensesApp={ this.state.data.totals.expense }
+            deleteItemApp={ this.clickDeleteItem } />
         </main>
       </React.Fragment>
     );

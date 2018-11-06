@@ -3,7 +3,40 @@ import React from 'react';
 import classes from './Items.module.css';
 import Item from './Item/Item';
 
-const Items = ({ incomeDataApp, expensesDataApp }) => {
+const Items = ({ incomeDataApp, expensesDataApp, totalIncomeApp, totalExpensesApp, deleteItemApp }) => {
+  const formatNumber = (num, type) => {
+    let numSplit, intPart, decimalPart, sign, result;
+
+    num = Math.abs(num);
+    num = num.toFixed(2);
+
+    numSplit = num.split('.');
+    intPart = numSplit[0];
+    // Add ',' to seperate thousand
+    if (intPart.length > 6) {
+      intPart = `${intPart.substring(
+        0,
+        intPart.length - 6
+      )},${intPart.substring(
+        intPart.length - 6,
+        intPart.length - 3
+      )},${intPart.substring(intPart.length - 3, intPart.length)}`;
+    } else if (intPart.length > 3) {
+      intPart = `${intPart.substring(
+        0,
+        intPart.length - 3
+      )},${intPart.substring(intPart.length - 3, intPart.length)}`;
+    }
+    decimalPart = numSplit[1];
+
+    type === 'income' ? (sign = '+') : (sign = '-');
+
+    num > 0
+      ? (result = `${sign} ${intPart}.${decimalPart}`)
+      : (result = `${intPart}.${decimalPart}`);
+    return result;
+  }
+
   return (
     <section className="bg-light-gray">
       <div className="container js-event-delagation">
@@ -17,13 +50,16 @@ const Items = ({ incomeDataApp, expensesDataApp }) => {
                   idItems={ `income-${income.id}` }
                   dateItems={`Date: ${income.date}`}
                   descriptionItems={ income.description }
-                  amountItems={ `${income.amount} €` } />
+                  amountItems={ `${formatNumber(income.amount, 'income')} €` }
+                  deleteItemItems={ deleteItemApp } />
               }) }
             </div>
 
             <div className={ classes.incomes__total }>
               <p>Total income: </p>
-              <p className="text-green total-income"></p>
+              <p className="text-green total-income">
+                { `${formatNumber(totalIncomeApp, 'income')} €` }
+              </p>
             </div>
           </div>
 
@@ -36,13 +72,16 @@ const Items = ({ incomeDataApp, expensesDataApp }) => {
                   idItems={ `expense-${expense.id}` }
                   dateItems={`Date: ${expense.date}`}
                   descriptionItems={ expense.description }
-                  amountItems={`${expense.amount} €` } />
+                  amountItems={ `${formatNumber(expense.amount, 'expense')} €` }
+                  deleteItemItems={ deleteItemApp } />
               }) }
             </div>
 
             <div className={ classes.expenses__total }>
               <p>Total expenses: </p>
-              <p className="text-red total-expense"></p>
+              <p className="text-red total-expense">
+                { `${formatNumber(totalExpensesApp, 'expense')} €` }
+              </p>
             </div>
           </div>
         </div>
