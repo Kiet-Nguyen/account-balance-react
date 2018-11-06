@@ -19,10 +19,8 @@ class App extends Component {
         income: 0,
         expense: 0
       },
-      balance: 0,
-      percentage: -1
-    },
-    sum: 0,
+      balance: 0
+    }
   }
 
   displayDate = () => {
@@ -55,39 +53,44 @@ class App extends Component {
   }
 
   addItem = () => {
-    let newItem, itemID;
-    // Create item's ID
-    if (this.state.data.allItems[this.state.type].length > 0) {
-      itemID = this.state.data.allItems[this.state.type][this.state.data.allItems[this.state.type].length - 1].id + 1;
-    } else {
-      itemID = 0;
-    }
-    // Add new item into its respective postion
-    if (this.state.type === 'income') {
-      newItem = {
-        id: itemID,
-        date: this.displayDate(),
-        description: this.state.descriptionValue,
-        amount: this.state.amountValue
-      };
-    } else if (this.state.type === 'expense') {
-      newItem = {
-        id: itemID,
-        date: this.displayDate(),
-        description: this.state.descriptionValue,
-        amount: this.state.amountValue
-      };
-    }
-    this.state.data.allItems[this.state.type].push(newItem);
+    if (this.state.descriptionValue !== '' && !isNaN(this.state.amountValue) && this.state.amountValue > 0) {
+      let newItem, itemID;
+      // Create item's ID
+      if (this.state.data.allItems[this.state.type].length > 0) {
+        itemID = this.state.data.allItems[this.state.type][this.state.data.allItems[this.state.type].length - 1].id + 1;
+      } else {
+        itemID = 0;
+      }
+      // Capitalized first letter of description
+      const descriptionCapitalized =
+        this.state.descriptionValue.charAt(0).toUpperCase() +
+        this.state.descriptionValue.slice(1);
+      // Add new item into its respective postion
+      if (this.state.type === 'income') {
+        newItem = {
+          id: itemID,
+          date: this.displayDate(),
+          description: descriptionCapitalized,
+          amount: this.state.amountValue
+        };
+      } else if (this.state.type === 'expense') {
+        newItem = {
+          id: itemID,
+          date: this.displayDate(),
+          description: descriptionCapitalized,
+          amount: this.state.amountValue
+        };
+      }
+      this.state.data.allItems[this.state.type].push(newItem);
 
-    // Clear input fields
-    this.setState({ descriptionValue: '', amountValue: '' });
-    console.log(this.state.data);
-    // Calculate totals income and expenses
-    this.calculateTotal('income');
-    this.calculateTotal('expense');
-    // Calculate balance
-    this.calculateBalance();
+      // Clear input fields
+      this.setState({ descriptionValue: '', amountValue: '' });
+      // Calculate totals income and expenses
+      this.calculateTotal('income');
+      this.calculateTotal('expense');
+      // Calculate balance
+      this.calculateBalance();
+    }
   }
 
   deleteItem = (type, id) => {
@@ -121,9 +124,6 @@ class App extends Component {
   }
 
   clickedAddItemHandler = () => {
-    if (this.state.descriptionValue === '' && this.state.amountValue === '') {
-      return false;
-    }
     this.addItem();
   }
 
