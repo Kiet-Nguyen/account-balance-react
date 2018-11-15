@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/account-balance-react/static/js/runtime~main.fa786254.js"
   },
   {
-    "revision": "9c9c0df413a56e0fd197",
-    "url": "/account-balance-react/static/js/main.9c9c0df4.chunk.js"
+    "revision": "728ab7b76a80b940f3d7",
+    "url": "/account-balance-react/static/js/main.728ab7b7.chunk.js"
   },
   {
     "revision": "778a6892300c5917d66f",
     "url": "/account-balance-react/static/js/1.778a6892.chunk.js"
   },
   {
-    "revision": "9c9c0df413a56e0fd197",
+    "revision": "728ab7b76a80b940f3d7",
     "url": "/account-balance-react/static/css/main.bfdd2aa2.chunk.css"
   },
   {
-    "revision": "995a924d44e87cce2c775b2f3dcb9ed8",
+    "revision": "f38e246f324fffa04e490b58d8d2d4eb",
     "url": "/account-balance-react/index.html"
   }
 ];
