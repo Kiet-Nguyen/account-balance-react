@@ -13,7 +13,7 @@ const Item = ({ idItems, descriptionItems, amountItems, dateItems, deleteItemIte
         <p className={ classes.value }>{ amountItems }</p>
         <button 
           className={ [classes.btn, classes.delete_btn].join(' ') }
-          onClick={ deleteItemItems } >
+          onClick={() => deleteItemItems(idItems) } >
           <DeleteIcon />
         </button>
       </div>

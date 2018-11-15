@@ -127,16 +127,13 @@ class App extends Component {
     this.addItem();
   }
 
-  clickDeleteItem = (event) => {
-    let itemID, type, id;
-    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+  clickDeleteItem = (itemID) => {
+    let type, id;
 
-    if (itemID) {
-      const typeIDArr = itemID.split('-');
-      type = typeIDArr[0];
-      id = parseInt(typeIDArr[1]);
-      this.deleteItem(type, id);
-    }
+    const typeIDArr = itemID.split('-');
+    type = typeIDArr[0];
+    id = parseInt(typeIDArr[1]);
+    this.deleteItem(type, id);
     // Calculate totals income and expenses
     this.calculateTotal('income');
     this.calculateTotal('expense');
@@ -157,14 +154,16 @@ class App extends Component {
             changedDescriptionValueApp={ this.changedDescriptionValueHandler }
             changedAmountValueApp={ this.changedAmountValueHandler }
             clickedAddItemApp={ this.clickedAddItemHandler }
-            keyPressAddItemApp={ this.keyPressAddItemHandler } />
+            keyPressAddItemApp={ this.keyPressAddItemHandler }
+          />
           <TotalBalance balanceApp={ this.state.data.balance } />
           <Items
             incomeDataApp={ this.state.data.allItems.income }
             expensesDataApp={ this.state.data.allItems.expense }
             totalIncomeApp={ this.state.data.totals.income }
             totalExpensesApp={ this.state.data.totals.expense }
-            deleteItemApp={ this.clickDeleteItem } />
+            deleteItemApp={ this.clickDeleteItem }
+          />
         </main>
       </React.Fragment>
     );
