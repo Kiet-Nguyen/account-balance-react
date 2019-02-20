@@ -1,14 +1,16 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 # Account balance
-[Live demo](https://monthly-balance.netlify.com/)
+Live demo for this project - [Live demo](https://kiet-nguyen.github.io/account-balance-react/)
 
+###### Add income
 ![Add income](https://media.giphy.com/media/5vUN1gG54FjQWfNMrq/giphy.gif)
 
+###### Add expenses
 ![Add expenses](https://media.giphy.com/media/kFMS6u5xmU2DeiLqRK/giphy.gif)
 
 ## Description
-A simple tool to add income and expenses to keep track with your total income, total expense and balance in a month.
+A simple tool to add/edit income and expenses to keep track with your total income, total expense and balance in a month.
 As one of my first project, I only used ReactJS, HTML5 and CSS3.
 
 
