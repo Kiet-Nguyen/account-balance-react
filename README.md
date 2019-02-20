@@ -3,9 +3,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 # Account balance
 [Live demo](https://monthly-balance.netlify.com/)
 
-[Add income](https://media.giphy.com/media/5vUN1gG54FjQWfNMrq/giphy.gif)
+![Add income](https://media.giphy.com/media/5vUN1gG54FjQWfNMrq/giphy.gif)
 
-[Add expenses](https://media.giphy.com/media/kFMS6u5xmU2DeiLqRK/giphy.gif)
+![Add expenses](https://media.giphy.com/media/kFMS6u5xmU2DeiLqRK/giphy.gif)
 
 ## Description
 A simple tool to add income and expenses to keep track with your total income, total expense and balance in a month.
