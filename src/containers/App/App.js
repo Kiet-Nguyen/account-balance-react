@@ -26,7 +26,7 @@ class App extends Component {
   displayDate = () => {
     let today = new Date();
     let datestring = `
-      ${today.toLocaleDateString('en-FI')} 
+      ${today.toLocaleDateString('en-FI')}
       ${today.getHours()}:${today.getMinutes()}
     `;
     return datestring;
@@ -65,7 +65,7 @@ class App extends Component {
       const descriptionCapitalized =
         this.state.descriptionValue.charAt(0).toUpperCase() +
         this.state.descriptionValue.slice(1);
-      // Add new item into its respective postion
+      // Add new item into its respective position
       if (this.state.type === 'income') {
         newItem = {
           id: itemID,
